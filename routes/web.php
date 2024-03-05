@@ -3,20 +3,20 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+
+use App\Http\Controllers\StudentController;
+
+Route::get('/add-student', [StudentController::class, 'create']);
+Route::post('/add-student', [StudentController::class, 'store'])->name('add.student');
+Route::get('/students', [StudentController::class, 'index'])->name('students.index');
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Route::get('/post', function () {
+//     return view('post');
+// });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
