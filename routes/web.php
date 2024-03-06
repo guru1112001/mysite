@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\StudentController;
 
-Route::get('/add-student', [StudentController::class, 'create']);
-Route::post('/add-student', [StudentController::class, 'store'])->name('add.student');
+Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
+Route::post('/students', [StudentController::class, 'store'])->name('students.store');
 Route::get('/students', [StudentController::class, 'index'])->name('students.index');
 
 Route::get('/', function () {

@@ -8,7 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     protected $fillable = [
-        'name', 'class', 'rollno', 'gender', 'city', 'country'
+        'name', 'class', 'rollno', 'gender', 'city_id', 'country_id', 'email',
     ];
-    use HasFactory;
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
 }
