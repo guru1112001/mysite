@@ -19,14 +19,19 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'class' => 'required|string|max:255',
-            'rollno' => 'required|string|max:255',
+            'name' => 'required|string|regex:/^[a-zA-Z\s]+$/',
+            'class' => 'required|numeric|max:10',
+            'rollno' => 'required|numeric|digits_between:1,10',
             'gender' => 'required|in:male,female',
             'city_id' => 'required|exists:cities,id',
             'country_id' => 'required|exists:countries,id',
-            'email' => 'required|string|email|max:255|unique:students',
+            'email' => 'required|email|max:100',
             'confirm_checkbox' => 'accepted',
+        ], [
+            'name.regex' => 'The name field should only contain letters and spaces.',
+            'class.numeric' => 'The class field must be a number.',
+            'rollno.numeric' => 'The roll number field must be a number.',
+            
         ]);
 
         $student = new Student();
@@ -46,4 +51,44 @@ class StudentController extends Controller
         $students = Student::all();
         return view('students.index', compact('students'));
     }
+    public function edit($id)
+    {
+    $student = Student::findOrFail($id);
+    // Assuming you have 'cities' and 'countries' for dropdowns in your form
+    $cities = City::all(); // Make sure to add `use App\Models\City;` at the top
+    $countries = Country::all(); // Make sure to add `use App\Models\Country;` at the top
+    return view('students.edit', compact('student', 'cities', 'countries'));
+    }
+
+    public function destroy($id)
+    {
+    $student = Student::findOrFail($id);
+    $student->delete();
+    return redirect()->route('students.index')->with('success', 'Student deleted successfully!');
+    }
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'name' => 'required|string|regex:/^[a-zA-Z\s]+$/',
+        'class' => 'required|numeric|max:10',
+        'rollno' => 'required|numeric|digits_between:1,10',
+        'gender' => 'required|in:male,female',
+        'city_id' => 'required|exists:cities,id',
+        'country_id' => 'required|exists:countries,id',
+        'email' => 'required|email|max:100',
+    ], [
+        'name.regex' => 'The name field should only contain letters and spaces.',
+        'class.numeric' => 'The class field must be a number.',
+        'rollno.numeric' => 'The roll number field must be a number.',
+        
+    ]);
+    
+
+    $student = Student::findOrFail($id);
+    $student->update($request->all());
+
+    return redirect()->route('students.index')->with('success', 'Student updated successfully');
+}
+
+
 }

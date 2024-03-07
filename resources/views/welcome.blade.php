@@ -1,1 +1,5 @@
-<h1>Our first page</h1>
+@extends('layouts.app')
+@section('content')
+
+<h1>homepage</h1>
+@endsection
